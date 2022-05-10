@@ -76,16 +76,17 @@
       {{ amountOfCorrectAnswers }}
 
       <button id="nextButton" @click="nextQuestion()">next</button>
-
-      <div v-if="isQuizFinished">
-        <h4>TESTTESTTEST</h4>
-        {{ startQuiz }}
-        {{ giveInput }}
-      </div>
     </div>
+    <div v-if="isQuizFinished">
+      <h2>Your score:</h2>
 
-    {{ startQuiz }}
-    {{ giveInput }}
+      <h4 class="positive" v-if="succeeded > 0.5">
+        {{ amountOfCorrectAnswers }} / {{ amountAnsweredQuestions }}
+      </h4>
+      <h4 class="negative" v-else>
+        {{ amountOfCorrectAnswers }} / {{ amountAnsweredQuestions }}
+      </h4>
+    </div>
   </q-page>
 </template>
 
@@ -117,6 +118,8 @@ export default defineComponent({
     const aThreeBoolean = ref('');
     const aFourBoolean = ref('');
     const correctAnswer = ref('');
+    const amountAnsweredQuestions = ref(0);
+    const succeeded = ref(0);
 
     // Function om quiz te starten
     function startQuizClicked() {
@@ -194,8 +197,10 @@ export default defineComponent({
       givenCorrectAnswers.value = [];
       givenIncorrectAnswers.value = [];
       if (i === quizObjects.length) {
-        alert('END of quiz - need fix!');
         startQuiz.value = false;
+        amountAnsweredQuestions.value = quizObjects.length - 1;
+        succeeded.value =
+          amountOfCorrectAnswers.value / amountAnsweredQuestions.value;
       }
     }
 
@@ -208,7 +213,9 @@ export default defineComponent({
     function answerCheck(isCorrect: boolean, indexNumber: number) {
       if (isCorrect === true) {
         givenCorrectAnswers.value[indexNumber] = true;
-        amountOfCorrectAnswers.value++;
+        if (i !== 0) {
+          amountOfCorrectAnswers.value++;
+        }
       }
       if (isCorrect === false) {
         givenIncorrectAnswers.value[indexNumber] = true;
@@ -238,6 +245,8 @@ export default defineComponent({
       correctAnswer,
       amountOfCorrectAnswers,
       isQuizFinished,
+      amountAnsweredQuestions,
+      succeeded,
     };
   },
 });
@@ -301,5 +310,13 @@ select {
 .inputField {
   margin: 5px;
   display: block;
+}
+
+.positive {
+  color: green;
+}
+
+.negative {
+  color: red;
 }
 </style>
