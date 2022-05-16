@@ -1,5 +1,7 @@
 <template>
   <q-page id="pageContainer">
+    <!-- GIVE INPUT -->
+
     <div class="startContainer" v-if="giveInput">
       <InputComponent
         :text="'Enter your question'"
@@ -47,12 +49,14 @@
         <option value="fourth">Fourth</option>
       </select>
 
+      <br />
+
       <button id="saveAnswer" @click="pushAnswer()">Save answer</button>
 
       <button id="startButton" @click="startQuizClicked()">Start Quiz</button>
     </div>
 
-    <!-- HIER START DE QUIZ -->
+    <!-- START OF QUIZ -->
 
     <div v-if="startQuiz">
       <div id="centerQuestion">
@@ -77,6 +81,9 @@
 
       <button id="nextButton" @click="nextQuestion()">next</button>
     </div>
+
+    <!-- THE END -->
+
     <div v-if="isQuizFinished">
       <h2>Your score:</h2>
 
@@ -117,6 +124,7 @@ export default defineComponent({
     const aTwoBoolean = ref('');
     const aThreeBoolean = ref('');
     const aFourBoolean = ref('');
+
     const correctAnswer = ref('');
     const amountAnsweredQuestions = ref(0);
     const succeeded = ref(0);
@@ -260,11 +268,12 @@ export default defineComponent({
 }
 
 #startButton {
-  height: 125px;
-  width: 350px;
-  background-color: deeppink;
-  font-size: 50px;
-  margin-top: 20px;
+  height: 4rem;
+  width: 15rem;
+  background-image: radial-gradient(circle, #aabbd8, #bfe370);
+  font-size: 2.5rem;
+  margin-top: 2rem;
+  border-radius: 2rem;
   cursor: pointer;
 }
 
@@ -286,7 +295,9 @@ export default defineComponent({
 }
 
 .startContainer {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #saveAnswer {
@@ -299,11 +310,13 @@ select {
 }
 
 #nextButton {
-  width: 70px;
-  height: 35px;
-  background-color: rgba(84, 202, 235, 0.592);
+  width: 4.5rem;
+  height: 2.5rem;
+  background-image: radial-gradient(circle, #c3e184bc, #30aaccea);
   border-color: #54caeb;
-  border-radius: 48%;
+  border-radius: 2rem;
+  margin-right: 1rem;
+  margin-top: 1rem;
   float: right;
 }
 
@@ -314,9 +327,24 @@ select {
 
 .positive {
   color: green;
+  margin-left: 7rem;
 }
 
 .negative {
   color: red;
+  margin-left: 7rem;
+}
+
+@media only screen and (max-width: 768px) {
+  #componentContainer {
+    width: 50%;
+    height: 100%;
+    margin-left: 14.5rem;
+  }
+
+  #nextButton {
+    margin-top: -19rem;
+    margin-right: 19rem;
+  }
 }
 </style>

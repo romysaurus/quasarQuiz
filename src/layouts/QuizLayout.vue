@@ -14,4 +14,9 @@
   display: flex;
   justify-content: center;
 }
+
+h2 {
+  font-family: 'EB Garamond', serif;
+  border-bottom: 1px solid black;
+}
 </style>
