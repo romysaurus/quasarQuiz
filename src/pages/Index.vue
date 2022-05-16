@@ -77,7 +77,6 @@
           />
         </div>
       </div>
-      {{ amountOfCorrectAnswers }}
 
       <button id="nextButton" @click="nextQuestion()">next</button>
     </div>
@@ -191,8 +190,6 @@ export default defineComponent({
       answerThree.value = '';
       answerFour.value = '';
       correctAnswer.value = '';
-
-      console.log(quizObjects);
     }
 
     let i = 0;
