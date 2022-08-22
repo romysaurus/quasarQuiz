@@ -1,10 +1,10 @@
 <template>
   <input
-    class="inputField"
+    class="input-field"
     type="text"
     :placeholder="text"
-    :value="valueName"
-    @change="onChange($event)"
+    :value="modelValue"
+    @input="$emit('update:modelValue', $event.target.value)"
   />
 </template>
 
@@ -14,7 +14,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'InputComponent',
   props: {
-    valueName: {
+    modelValue: {
       type: String,
       required: true,
     },
@@ -22,20 +22,29 @@ export default defineComponent({
       type: String,
     },
   },
-  emits: ['inputChange'],
-  setup(props, context) {
-    function onChange(inputValue: { target: { value: string } }) {
-      context.emit('inputChange', inputValue.target.value);
-    }
 
-    return { onChange };
-  },
+  emits: ['update:modelValue'],
 });
 </script>
 
 <style lang="scss" scoped>
-.inputField {
+.input-field {
   margin: 5px;
   display: block;
+  border: 0.05rem solid #ff8c00;
+  color: deeppink;
+  width: 18rem;
+  height: 2rem;
+
+  &::placeholder {
+    color: deeppink;
+    text-align: center;
+  }
+
+  &:focus {
+    outline: none !important;
+    border: 0.1rem solid #ff8c00;
+    box-shadow: 0 0 0.3rem #ff1493;
+  }
 }
 </style>

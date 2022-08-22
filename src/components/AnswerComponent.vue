@@ -36,9 +36,9 @@ export default defineComponent({
 }
 
 .standard {
-  background-color: #efefef;
-  border-color: rgb(0, 99, 99);
-  color: rgb(0, 99, 99);
+  background-color: #ff8c0025;
+  border: 0.05rem solid #ff8c00;
+  color: deeppink;
 }
 
 .right {

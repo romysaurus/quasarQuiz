@@ -1,48 +1,28 @@
 <template>
-  <q-page id="pageContainer">
+  <q-page class="page-container">
     <!-- GIVE INPUT -->
 
     <div class="startContainer" v-if="giveInput">
-      <InputComponent
-        :text="'Enter your question'"
-        :valueName="question"
-        @inputChange="question = $event"
-      />
+      <InputComponent :text="'Enter your question'" v-model="question" />
 
       <br />
 
-      <input
-        class="inputField"
-        type="text"
-        placeholder="Enter first answer"
-        v-model="answerOne"
-      />
-
-      <input
-        class="inputField"
-        type="text"
-        placeholder="Enter second answer"
-        v-model="answerTwo"
-      />
-
-      <input
-        class="inputField"
-        type="text"
-        placeholder="Enter third answer"
-        v-model="answerThree"
-      />
-
-      <input
-        class="inputField"
-        type="text"
-        placeholder="Enter fourth answer"
-        v-model="answerFour"
-      />
+      <InputComponent :text="'Enter first answer'" v-model="answerOne" />
+      <InputComponent :text="'Enter second answer'" v-model="answerTwo" />
+      <InputComponent :text="'Enter third answer'" v-model="answerThree" />
+      <InputComponent :text="'Enter fourth answer'" v-model="answerFour" />
 
       <br />
 
-      <label for="wichAnswerCorrect">Wich answer is correct:</label>
-      <select id="wichCorrect" name="wichAnswerCorrect" v-model="correctAnswer">
+      <select
+        class="correct-answer-input"
+        name="wichAnswerIsCorrect"
+        v-model="correctAnswer"
+        required
+      >
+        <option value="" disabled selected hidden>
+          Which answer is correct:
+        </option>
         <option value="first">First</option>
         <option value="second">Second</option>
         <option value="third">Third</option>
@@ -51,22 +31,24 @@
 
       <br />
 
-      <button id="saveAnswer" @click="pushAnswer()">Save answer</button>
+      <button class="save-answer" @click="pushAnswers()">Save answer</button>
 
-      <button id="startButton" @click="startQuizClicked()">Start Quiz</button>
+      <button class="start-button" @click="startQuizClicked()">
+        Start Quiz
+      </button>
     </div>
 
     <!-- START OF QUIZ -->
 
     <div v-if="startQuiz">
-      <div id="centerQuestion">
+      <div class="center-question">
         <div class="question">
           {{ selectedQuestion.vraag }}
         </div>
       </div>
 
-      <div id="componentContainer">
-        <div id="answerContainer">
+      <div class="answer-component-container">
+        <div class="answer-container">
           <AnswerComponent
             v-for="(antwoord, index) in selectedQuestion.antwoorden"
             :key="index"
@@ -77,14 +59,15 @@
           />
         </div>
       </div>
-
-      <button id="nextButton" @click="nextQuestion()">next</button>
+      <div class="next-button-container">
+        <button class="next-button" @click="nextQuestion()">next</button>
+      </div>
     </div>
 
     <!-- THE END -->
 
     <div v-if="isQuizFinished">
-      <h2>Your score:</h2>
+      <h2 class="result-text">Your score:</h2>
 
       <h4 class="positive" v-if="succeeded > 0.5">
         {{ amountOfCorrectAnswers }} / {{ amountAnsweredQuestions }}
@@ -99,7 +82,7 @@
 <script lang="ts">
 import { defineComponent, ref, Ref, computed } from 'vue';
 import AnswerComponent from 'components/AnswerComponent.vue';
-import InputComponent from 'components/InputComponent.vue';
+import InputComponent from 'src/components/InputComponent.vue';
 
 export default defineComponent({
   name: 'indexPage',
@@ -109,24 +92,21 @@ export default defineComponent({
   },
 
   setup() {
-    const startQuiz = ref(false);
-    const giveInput = ref(true);
+    const startQuiz: Ref<boolean> = ref(false);
+    const giveInput: Ref<boolean> = ref(true);
     const isQuizFinished = computed(() => {
       return !startQuiz.value && !giveInput.value;
     });
-    const question = ref('');
-    const answerOne = ref('');
-    const answerTwo = ref('');
-    const answerThree = ref('');
-    const answerFour = ref('');
-    const aOneBoolean = ref('');
-    const aTwoBoolean = ref('');
-    const aThreeBoolean = ref('');
-    const aFourBoolean = ref('');
 
-    const correctAnswer = ref('');
-    const amountAnsweredQuestions = ref(0);
-    const succeeded = ref(0);
+    const question: Ref<string> = ref('');
+    const answerOne: Ref<string> = ref('');
+    const answerTwo: Ref<string> = ref('');
+    const answerThree: Ref<string> = ref('');
+    const answerFour: Ref<string> = ref('');
+
+    const correctAnswer: Ref<string> = ref('');
+    const amountAnsweredQuestions: Ref<number> = ref(0);
+    const succeeded: Ref<number> = ref(0);
 
     // Function om quiz te starten
     function startQuizClicked() {
@@ -147,13 +127,7 @@ export default defineComponent({
     ];
 
     // Function om q&a's toe te voegen vanuit user input
-    function pushAnswer() {
-      const questionValue = question.value;
-      const answerOneValue = answerOne.value;
-      const answerTwoValue = answerTwo.value;
-      const answerThreeValue = answerThree.value;
-      const answerFourValue = answerFour.value;
-
+    function pushAnswers() {
       let aOneResult = false;
       let aTwoResult = false;
       let aThreeResult = false;
@@ -175,12 +149,12 @@ export default defineComponent({
       }
 
       quizObjects.push({
-        vraag: questionValue,
+        vraag: question.value,
         antwoorden: [
-          { answer: answerOneValue, isTrue: aOneResult },
-          { answer: answerTwoValue, isTrue: aTwoResult },
-          { answer: answerThreeValue, isTrue: aThreeResult },
-          { answer: answerFourValue, isTrue: aFourResult },
+          { answer: answerOne.value, isTrue: aOneResult },
+          { answer: answerTwo.value, isTrue: aTwoResult },
+          { answer: answerThree.value, isTrue: aThreeResult },
+          { answer: answerFour.value, isTrue: aFourResult },
         ],
       });
 
@@ -237,16 +211,12 @@ export default defineComponent({
       quizObjects,
       selectedQuestion,
       nextQuestion,
-      pushAnswer,
+      pushAnswers,
       question,
       answerOne,
       answerTwo,
       answerThree,
       answerFour,
-      aOneBoolean,
-      aTwoBoolean,
-      aThreeBoolean,
-      aFourBoolean,
       correctAnswer,
       amountOfCorrectAnswers,
       isQuizFinished,
@@ -258,34 +228,56 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-#pageContainer {
-  margin: 5px 30px;
+.page-container {
+  margin: 40px 30px 5px 30px;
   display: flex;
   justify-content: center;
 }
 
-#startButton {
+.correct-answer-input {
+  border: 0.05rem solid #ff8c00;
+  color: deeppink;
+  width: 18rem;
+  height: 2rem;
+  text-align: center;
+
+  &:focus {
+    outline: none !important;
+    border: 0.1rem solid #ff8c00;
+    box-shadow: 0 0 0.3rem #ff1493;
+  }
+}
+
+.save-answer {
+  display: block;
+  margin: 5px;
+  background-image: linear-gradient(to right bottom, #fdaa44, #fd53ae);
+  border: 0.05rem solid #e98d1c;
+  cursor: pointer;
+}
+
+.start-button {
   height: 4rem;
   width: 15rem;
-  background-image: radial-gradient(circle, #aabbd8, #bfe370);
+  background-image: radial-gradient(circle, #008793, #00bf72, #a8eb12);
   font-size: 2.5rem;
-  margin-top: 2rem;
+  margin-top: 4rem;
   border-radius: 2rem;
   cursor: pointer;
 }
 
-#centerQuestion {
+.center-question {
   display: flex;
   justify-content: center;
   margin-bottom: 25px;
 }
 .question {
-  color: rgb(1, 59, 59);
+  color: rgb(255, 20, 94);
   font-size: 27px;
   justify-content: center;
 }
 
-#answerContainer {
+.answer-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -297,29 +289,27 @@ export default defineComponent({
   align-items: center;
 }
 
-#saveAnswer {
-  display: block;
-  margin: 5px;
-}
-
 select {
   margin-left: 4px;
 }
 
-#nextButton {
-  width: 4.5rem;
+.next-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.next-button {
+  width: 7rem;
   height: 2.5rem;
-  background-image: radial-gradient(circle, #c3e184bc, #30aaccea);
+  background-image: radial-gradient(circle, #008793, #00bf72, #a8eb12);
   border-color: #54caeb;
   border-radius: 2rem;
   margin-right: 1rem;
-  margin-top: 1rem;
-  float: right;
+  margin-top: 2rem;
 }
 
-.inputField {
-  margin: 5px;
-  display: block;
+.result-text {
+  color: deeppink;
 }
 
 .positive {
@@ -333,13 +323,13 @@ select {
 }
 
 @media only screen and (max-width: 768px) {
-  #componentContainer {
+  .answer-component-container {
     width: 50%;
     height: 100%;
     margin-left: 14.5rem;
   }
 
-  #nextButton {
+  .next-button {
     margin-top: -19rem;
     margin-right: 19rem;
   }

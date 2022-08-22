@@ -1,22 +1,27 @@
 <template>
   <q-layout view="hHh lpR fFf">
+    <q-header class="header">
+      <q-toolbar>
+        <q-toolbar-title class="header-text"> QUIZ TIME </q-toolbar-title>
+      </q-toolbar>
+    </q-header>
+
     <q-page-container>
-      <div id="header">
-        <h2>QUIZ TIME</h2>
-      </div>
       <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
 <style lang="scss" scoped>
-#header {
-  display: flex;
-  justify-content: center;
+.header {
+  background-image: radial-gradient(circle, #008793, #00bf72, #a8eb12);
 }
 
-h2 {
-  font-family: 'EB Garamond', serif;
-  border-bottom: 1px solid black;
+.header-text {
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 2.5rem;
 }
 </style>
