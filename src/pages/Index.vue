@@ -289,10 +289,6 @@ export default defineComponent({
   align-items: center;
 }
 
-select {
-  margin-left: 4px;
-}
-
 .next-button-container {
   display: flex;
   justify-content: center;
