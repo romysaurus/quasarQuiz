@@ -2,6 +2,7 @@
   <input
     class="input-field"
     type="text"
+    required
     :placeholder="text"
     :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"

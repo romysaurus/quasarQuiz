@@ -128,42 +128,53 @@ export default defineComponent({
 
     // Function om q&a's toe te voegen vanuit user input
     function pushAnswers() {
-      let aOneResult = false;
-      let aTwoResult = false;
-      let aThreeResult = false;
-      let aFourResult = false;
+      if (
+        answerOne.value === '' ||
+        answerTwo.value === '' ||
+        answerThree.value === '' ||
+        answerFour.value === '' ||
+        question.value === '' ||
+        correctAnswer.value === ''
+      ) {
+        window.alert('Fill everything out!');
+      } else {
+        let aOneResult = false;
+        let aTwoResult = false;
+        let aThreeResult = false;
+        let aFourResult = false;
 
-      switch (correctAnswer.value) {
-        case 'first':
-          aOneResult = true;
-          break;
-        case 'second':
-          aTwoResult = true;
-          break;
-        case 'third':
-          aThreeResult = true;
-          break;
-        case 'fourth':
-          aFourResult = true;
-          break;
+        switch (correctAnswer.value) {
+          case 'first':
+            aOneResult = true;
+            break;
+          case 'second':
+            aTwoResult = true;
+            break;
+          case 'third':
+            aThreeResult = true;
+            break;
+          case 'fourth':
+            aFourResult = true;
+            break;
+        }
+
+        quizObjects.push({
+          vraag: question.value,
+          antwoorden: [
+            { answer: answerOne.value, isTrue: aOneResult },
+            { answer: answerTwo.value, isTrue: aTwoResult },
+            { answer: answerThree.value, isTrue: aThreeResult },
+            { answer: answerFour.value, isTrue: aFourResult },
+          ],
+        });
+
+        question.value = '';
+        answerOne.value = '';
+        answerTwo.value = '';
+        answerThree.value = '';
+        answerFour.value = '';
+        correctAnswer.value = '';
       }
-
-      quizObjects.push({
-        vraag: question.value,
-        antwoorden: [
-          { answer: answerOne.value, isTrue: aOneResult },
-          { answer: answerTwo.value, isTrue: aTwoResult },
-          { answer: answerThree.value, isTrue: aThreeResult },
-          { answer: answerFour.value, isTrue: aFourResult },
-        ],
-      });
-
-      question.value = '';
-      answerOne.value = '';
-      answerTwo.value = '';
-      answerThree.value = '';
-      answerFour.value = '';
-      correctAnswer.value = '';
     }
 
     let i = 0;
