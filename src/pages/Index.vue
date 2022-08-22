@@ -321,13 +321,7 @@ export default defineComponent({
 @media only screen and (max-width: 768px) {
   .answer-component-container {
     width: 50%;
-    height: 100%;
     margin-left: 14.5rem;
-  }
-
-  .next-button {
-    margin-top: -19rem;
-    margin-right: 19rem;
   }
 }
 </style>
